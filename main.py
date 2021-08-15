@@ -11,13 +11,22 @@ import json
 client = commands.Bot(command_prefix="d!")
 python_path = os.path.dirname(os.path.realpath(__file__))
 
+#check cache and json
+if os.path.isdir(f"{python_path}\\cache\\") == True:
+    print("cache found")
+elif os.path.isdir(f"{python_path}\\cache\\") == False:
+    print("cache made")
+    os.mkdir(f"{python_path}\\cache\\")
 
 if os.environ['COMPUTERNAME'] == "LADD-OVERLORD":
+    print("Dev, using unique data")
     with open(f'{python_path}\\mydata.json') as f:
         keys = json.load(f)
 else:
+    print("non-Dev, using data.json")
     with open(f'{python_path}\\data.json') as f:
         keys = json.load(f)
+#check cache and json
 
 #API START
 consumer_key= keys["consumer_key"]
@@ -37,9 +46,7 @@ def OAuth():
         print(e)
         return None
 
-oauth = OAuth()
-
-api = tweepy.API(oauth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+api = tweepy.API(OAuth(), wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 #API STOP
 
 
@@ -53,6 +60,10 @@ async def on_ready():
 async def download(ctx, in_url):
     url = in_url.split("/")
     status_id = url[len(url) - 1]
+    if "?" in status_id: #removes ?=20s garbage out of urls
+        status_id_q = status_id.split("?")
+        status_id = status_id_q[0]
+
     try:
         status = api.get_status(status_id)
         print(dir(status))
@@ -78,8 +89,5 @@ async def download(ctx, in_url):
 async def download_errore_handle(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
         await ctx.send(f'This command works every {round(error.retry_after, 2)} seconds, please wait!')
-
-
-
 
 client.run(keys["discord_id"])
