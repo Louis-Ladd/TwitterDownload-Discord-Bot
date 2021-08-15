@@ -11,11 +11,12 @@ import json
 client = commands.Bot(command_prefix="d!")
 python_path = os.path.dirname(os.path.realpath(__file__))
 
-try:
-    with open(f'{python_path}\\data.json') as f:
-        keys = json.load(f)
-except FileNotFoundError:
+
+if os.environ['COMPUTERNAME'] == "LADD-OVERLORD":
     with open(f'{python_path}\\mydata.json') as f:
+        keys = json.load(f)
+else:
+    with open(f'{python_path}\\data.json') as f:
         keys = json.load(f)
 
 #API START
