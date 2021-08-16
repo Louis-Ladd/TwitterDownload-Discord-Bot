@@ -78,7 +78,7 @@ async def download(ctx, in_url):
 
     uniuqe_id = uuid.uuid4()
     await ctx.channel.send("Downloading... Please wait!")
-    os.system(f'ffmpeg -i {video_source_url} "{python_path}\\cache\\{uniuqe_id}.mp4" -y')
+    os.system(f'ffmpeg -i "{video_source_url}" "{python_path}\\cache\\{uniuqe_id}.mp4" -y')
     prev_msg = await ctx.channel.history().get(author__id=876320913153458196) #Gets prev message
     await prev_msg.delete(delay=0.1)
     await ctx.channel.send(file=discord.File(f"{python_path}\\cache\\{uniuqe_id}.mp4"))
