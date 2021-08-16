@@ -1,9 +1,7 @@
 import os
 import discord
-from discord import user
 from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
-from discord.ext.commands.core import Command, cooldown
 import tweepy
 import uuid
 import json
@@ -79,15 +77,26 @@ async def download(ctx, in_url):
         await ctx.channel.send("The tweet needs a video dummie!")
 
     uniuqe_id = uuid.uuid4()
+    await ctx.channel.send("Downloading... Please wait!")
     os.system(f'ffmpeg -i {video_source_url} "{python_path}\\cache\\{uniuqe_id}.mp4" -y')
-    
+    prev_msg = await ctx.channel.history().get(author__id= 876320913153458196) #Gets prev message
+    await prev_msg.delete(delay=0.1)
     await ctx.channel.send(file=discord.File(f"{python_path}\\cache\\{uniuqe_id}.mp4"))
 
     os.remove(f"{python_path}\\cache\\{uniuqe_id}.mp4")
+    
+
 
 @download.error
-async def download_errore_handle(ctx, error):
+async def download_error_handle(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
         await ctx.send(f'This command works every {round(error.retry_after, 2)} seconds, please wait!')
+    elif isinstance(error, commands.errors.MissingRequiredArgument):
+        await ctx.send(f'This commands requires a URL or ID of a tweet with a video! (example:https://twitter.com/comfortparx/status/1426032422555168769, 1426032422555168769)')
+    else:
+        print("An Exception has occured!")
+        print(error + "\n")
+        
+
 
 client.run(keys["discord_id"])
