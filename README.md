@@ -1,4 +1,4 @@
-# TwitterVid-Discord-Bot
+# TwitterDownload-Discord-Bot 
 ### This is a discord bot that allows discord users to send twitter videos into their discord servers.
 ---
 >__this bot requires a Discord app/bot and twitter API tokens__
