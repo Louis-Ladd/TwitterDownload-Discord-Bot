@@ -16,19 +16,19 @@ def main():
     python_path = os.path.dirname(os.path.realpath(__file__))
 
     #check cache and json
-    if os.path.isdir(f"{python_path}\\cache\\") == True:
+    if os.path.isdir(f"{python_path}/cache/") == True:
         print("cache found")
-    elif os.path.isdir(f"{python_path}\\cache\\") == False:
+    elif os.path.isdir(f"{python_path}/cache/") == False:
         print("cache made")
-        os.mkdir(f"{python_path}\\cache\\")
+        os.mkdir(f"{python_path}/cache/")
 
     if os.environ['COMPUTERNAME'] == "LADD-OVERLORD":
         print("Dev, using unique data")
-        with open(f'{python_path}\\mydata.json') as f:
+        with open(f'{python_path}/mydata.json') as f:
             keys = json.load(f)
     else:
         print("non-Dev, using data.json")
-        with open(f'{python_path}\\data.json') as f:
+        with open(f'{python_path}/data.json') as f:
             keys = json.load(f)
     #check cache and json
 
@@ -85,14 +85,14 @@ def main():
 
         uniuqe_id = uuid.uuid4()
         await ctx.channel.send("Downloading... Please wait!")
-        os.system(f'ffmpeg -i "{video_source_url}" "{python_path}\\cache\\{uniuqe_id}.mp4" -y')
+        os.system(f'ffmpeg -i "{video_source_url}" "{python_path}/cache/{uniuqe_id}.mp4" -y')
 
         prev_msg = await ctx.channel.history().get(author__id=876320913153458196) #Gets prev message
         await prev_msg.delete(delay=0.1)
 
-        await ctx.channel.send(file=discord.File(f"{python_path}\\cache\\{uniuqe_id}.mp4"))
+        await ctx.channel.send(file=discord.File(f"{python_path}/cache/{uniuqe_id}.mp4"))
 
-        os.remove(f"{python_path}\\cache\\{uniuqe_id}.mp4")
+        os.remove(f"{python_path}/cache/{uniuqe_id}.mp4")
         
 
 
