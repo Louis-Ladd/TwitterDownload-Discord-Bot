@@ -40,12 +40,10 @@ def main():
 
     def OAuth():
         try:
-
             auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
             auth.set_access_token(token_key,token_secret)
-
             return auth
-
+        
         except Exception as e:
             print(e)
             return None
@@ -72,7 +70,6 @@ def main():
         try:
             status = api.get_status(status_id)
             print(dir(status))
-            
         except Exception as e:
             await ctx.channel.send("Sorry, but that url didn't work.")
             return
